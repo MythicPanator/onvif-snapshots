@@ -44,7 +44,7 @@ Static Website  or   CDN
 |----------|-------|
 | **Storage Account** (`staticWebsite.enabled = true`) | container `snapshots`, public read |
 | **Azure Function App** (Python 3.11, Y1 plan) | timer cron `0 */30 * * * *` |
-| **Application Insights** | free diagnostics |
+| **Application Insights** | diagnostics |
 
 Deploy:
 
