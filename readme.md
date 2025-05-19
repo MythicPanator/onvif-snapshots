@@ -90,23 +90,6 @@ While this setup is tuned for minimal cost, be mindful of other factors:
 
 > This works well for low-frequency, low-traffic, public-good projects — but if you embed the images in a popular website or remove safeguards, **you could absolutely rack up costs.**
 
-
-
----
-
-### ⚠️ Cost Disclaimer
-
-This project is engineered for **very low monthly cost**, but:
-
-> 💸 **You can absolutely mess this up.**
-
-Here’s how costs might increase if misconfigured:
-- ⚠️ No blob lifecycle policy → storage grows indefinitely  
-- ⚠️ Verbose logging in Application Insights → surprise analytics charges  
-- ⚠️ Embedding images on a high‑traffic site → bandwidth overages  
-- ⚠️ Switching to Premium App Service Plan → fixed monthly cost  
-- ⚠️ High-frequency function triggers (e.g. every minute) → compute spikes
-
 Always monitor your usage in the [Azure Portal](https://portal.azure.com), set spending alerts, and test changes on a throwaway subscription first if unsure.
 
 This repo is offered with the **best intent** — but **you’re responsible** for your own cloud bill.
