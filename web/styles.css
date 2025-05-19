@@ -1,0 +1,361 @@
+/* ===== Global Base Styles ===== */
+html {
+    box-sizing: border-box;
+    font-size: 16px;
+    line-height: 1.5;
+    scroll-behavior: smooth;
+  }
+  
+  *, *::before, *::after {
+    box-sizing: inherit;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, sans-serif;
+    background-color: #f0f2f4;
+    color: #212529;
+  }
+  
+  /* ===== Layout ===== */
+  
+  
+  header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+  }
+
+  
+  .centered-wrapper {
+    max-width: 1050px;
+    margin: 0 auto;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  
+  
+  
+  header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    flex-grow: 1;
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+  }
+
+
+header h1 a {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  header h1 a:hover,
+  header h1 a:focus {
+    text-decoration: underline;
+  }
+  
+  nav {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  nav a {
+    color: #0077cc;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+  }
+  
+  nav a:hover,
+  nav a:focus {
+    background-color: #eef6fc;
+    text-decoration: none;
+    outline: none;
+  }
+  
+  
+  main.centered-wrapper {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    padding: 2rem 1rem;    /* inner breathing room */
+    margin-top: 1rem;      /* tuck up under header border */
+  }
+  
+  
+  .intro-section {
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    margin-bottom: 0;
+  }
+  
+  .intro {
+    font-size: 1rem;
+    margin: 0 0 1.5rem 0;
+    text-align: left;
+  }
+
+  .camera-icon {
+    font-size: 2em;
+    margin-bottom: 0.5em;
+  }
+
+  .camera-icon span {
+    font-size: 0.7em;
+  }
+
+
+
+  .main-intro {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "icon"
+      "p1"
+      "weather"
+      "p2";
+    gap: 0rem;
+  }
+  
+  .main-intro .camera-icon {
+    grid-area: icon;
+  }
+  
+  .main-intro .intro:nth-of-type(1) {
+    grid-area: p1;
+  }
+  
+  .main-intro .weathercloud {
+    grid-area: weather;
+    justify-self: center;
+    width: 90px;
+    height: 90px;
+    background: #f7fbff;
+    border: 1px solid #c7e0f5;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0 0 1rem 1.5rem;
+    text-align: center;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  }
+  
+  .main-intro .intro:nth-of-type(2) {
+    grid-area: p2;
+  }
+  
+  .main-intro .weathercloud a {
+    text-decoration: none;
+    color: #0077cc;
+    font-weight: 600;
+    font-size: 0.8em;
+  }
+  
+  .main-intro .weathercloud-icon {
+    font-size: 1.6em;
+    display: block;
+    margin-bottom: 0.25em;
+  }
+  
+  
+
+  .cta-button {
+    display: inline-block;
+    padding: 0.25rem 0.7rem;
+    background: #ceeaff;
+    color: rgb(39, 39, 39);
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    margin-top: 3rem;
+    min-width: 0px;
+  }
+  .cta-button:hover,
+  .cta-button:focus {
+    background: #005fa3;
+  }
+
+  @media (min-width: 900px) {
+    .main-intro {
+      grid-template-columns: 1fr 140px;
+      grid-template-areas:
+        "icon      weather"
+        "p1        weather"
+        "p2        weather";
+      align-items: start;
+    }
+  
+    .main-intro .weathercloud {
+      justify-self: end;
+    }
+
+    .cta-button {
+        min-width: 290px;
+      }
+  }
+  
+  
+ 
+
+  
+  #day-selector {
+    text-align: center;
+    margin: 2rem auto;
+  }
+  
+  #day-selector button {
+    font-size: 1.25rem;
+    padding: 0.25rem 0.75rem;
+    margin: 0 1rem;
+    background: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  #day-selector span {
+    font-weight: bold;
+    font-size: 1rem;
+  }
+  
+  h2 {
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+  }
+  
+  /* ===== Snapshot Grid ===== */
+  #snapshot-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .tile {
+    flex: 1 1 220px;
+    max-width: 220px;
+    text-align: center;
+  }
+  
+  .tile img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    display: block;
+    margin: 0 auto;
+    cursor: pointer;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+  
+  .tile img:focus {
+    outline: 3px solid #0077cc;
+    outline-offset: 4px;
+  }
+  
+  /* ===== Responsive Adjustments ===== */
+  @media (max-width: 1000px) {
+    .tile {
+      flex: 1 1 30%;
+    }
+    header h1 { 
+        padding-left: 1rem;
+    }
+  }
+  
+  @media (max-width: 700px) {
+    .tile {
+      flex: 1 1 45%;
+    }
+    header h1 { 
+        padding-left: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .tile {
+        flex: 1 1 100%;
+        max-width: 120px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    
+      .tile img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+      }
+    header h1 { 
+        padding-left: 1rem;
+    }
+  }
+  
+  /* ===== Period Sections ===== */
+  section h2 {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+  }
+  
+  .period-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    justify-content: center;
+  }
+  
+  /* ===== Lightbox Modal ===== */
+  #lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  #lightbox[aria-hidden="false"] {
+    display: flex;
+  }
+  
+  #lightbox img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 4px;
+  }
+  
+  #lightbox-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 2rem;
+    color: white;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+  
+  #lightbox-close:focus {
+    outline: 3px solid #ffffff;
+    outline-offset: 4px;
+  }
+  

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Fimmvörðuskáli – Nýjustu myndir</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+      <div class="centered-wrapper header-inner">
+        <h1><a href="/">Fimmvörðuskáli</a></h1>
+        <nav aria-label="Aðalvalmynd">
+            <a href="history.html" >Skoða eldri myndir</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="centered-wrapper" role="main">
+        <section class="intro-section">
+        
+            <div class="camera-icon">📷<span>Myndavél við Fimmvörðuskála</span></div>
+        </section>    
+        <section class="intro-section main-intro">
+        <p class="intro">
+          Hér má sjá kyrrmyndir úr vefmyndavél sem staðsett er við Fimmvörðuskála,
+          skála Útivistar sem stendur á Fimmvörðuhálsi í um 1100 metra hæð yfir sjó. Hér má einnig finna <a href="https://app.weathercloud.net/d6585161315#profile">veðurupplýsingar</a> frá veðurstöð við skálann.
+        </p>
+        <div class="weathercloud">
+            <a href="https://app.weathercloud.net/d6585161315#profile" target="_blank">
+                <span class="weathercloud-icon">🌤️</span>
+                Veðurstöð</a>
+        </div>
+        <p class="intro">
+            Myndir eru uppfærðar sjálfkrafa á 30 mínútna fresti, og hægt er að skoða
+            eldri myndir frá deginum í dag (ef slíkar eru til) sem og fyrri daga
+            <a href="history.html">á sérstakri yfirlitssíðu</a>.
+          </p>
+          
+        
+      </section>
+  
+      <section id="snapshot-grid">
+        
+        <div class="tile">
+          
+          <img id="img-1" src="" alt="Suður myndavél – nýjasta mynd" role="button" tabindex="0">
+          <h2>Suður</h2>
+        </div>
+        <div class="tile">
+          
+          <img id="img-2" src="" alt="Suður að Baldvinsskála – nýjasta mynd" role="button" tabindex="0">
+          <h2>Suður að Baldvinsskála</h2>
+        </div>
+        <div class="tile">
+          
+          <img id="img-3" src="" alt="Norður myndavél – nýjasta mynd" role="button" tabindex="0">
+          <h2>Norður</h2>
+        </div>
+        <div class="tile">
+          
+          <img id="img-4" src="" alt="Vestur myndavél – nýjasta mynd" role="button" tabindex="0">
+          <h2>Vestur</h2>
+        </div>
+      </section>
+      <section class="intro-section">
+        <p style="text-align:center; margin-top:2rem;">
+            <a href="history.html"
+               class="cta-button" target="_blank" rel="noopener">
+               🔍 Skoða eldri myndir
+            </a>
+
+            <a href="https://www.utivist.is/skalar/fimmvorduhals"
+               class="cta-button" target="_blank" rel="noopener">
+               📍 Um skálann á útivist.is
+            </a>
+          </p>
+          
+      </section>
+    </main>
+  
+    <div id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="lightbox-heading">
+      <div class="lightbox-backdrop"></div>
+      <img id="lightbox-img" alt="">
+      <button id="lightbox-close" aria-label="Loka við stórmynd">×</button>
+    </div>
+  
+    <script src="global.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>

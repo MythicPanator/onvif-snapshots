@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Myndasafn – Fimmvörðuskáli</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="centered-wrapper header-inner">
+          <h1><a href="/">Fimmvörðuskáli</a></h1>
+          <nav aria-label="Aðalvalmynd">
+            <a href="index.html">← Til baka</a>
+            </nav>
+        </div>
+      </header>
+      
+
+  <section id="day-selector" aria-label="Dagaval">
+    <button id="prev-day" aria-label="Fyrri dagur">◀</button>
+    <span id="current-day" role="status" aria-live="polite">Vel dag</span>
+    <button id="next-day" aria-label="Næsti dagur">▶</button>
+  </section>
+
+  <main role="main" class="centered-wrapper">
+    <div id="snapshot-grid" ></div>
+    <!-- thumbnails will go here -->
+    <section class="intro-section">
+        <p style="text-align:center; margin-top:2rem;">
+            <a href="/"
+               class="cta-button" target="_blank" rel="noopener">
+               ← Til baka
+            </a>
+    
+          </p>
+          
+      </section>
+  </main>
+
+  
+  <div id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="lightbox-heading">
+    <div class="lightbox-backdrop"></div>
+    <img id="lightbox-img" alt="">
+    <button id="lightbox-close" aria-label="Loka við stórmynd">×</button>
+  </div>
+
+  <script src="global.js"></script>
+  <script src="history.js"></script>
+</body>
+</html>
