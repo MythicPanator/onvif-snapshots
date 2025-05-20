@@ -1,6 +1,6 @@
 # Camera Snapshot Hosting on Azure
 
-> Compleatly overengineered — and gloriously within hobby budget.
+> Compleatly over-engineered — and gloriously within hobby budget.
 
 [![Screenshot of the live site](image.png)](https://utivist5vhfj4cenlybqry2.z6.web.core.windows.net/index.html)
 
