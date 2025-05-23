@@ -8,6 +8,14 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'function_app.py'
+      - 'onvif_client.py'
+      - 'infra/**'
+      - '.github/workflows/deploy-function-app.yml'
+      - 'requirements.txt'
+      - 'host.json'
+      - '.env.example'
   workflow_dispatch:
 
 env:
