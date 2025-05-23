@@ -59,22 +59,27 @@ def handle_snapshot_sequence():
                   'midday' if 10 <= now.hour < 15 else
                   'late'   if 15 <= now.hour < 21 else
                   'night')
-
+    skip_archive_update = 21 <= now.hour <= 23
+    
     blob_probe = BlobClient.from_connection_string(AZ_CONNECTION, SNAPSHOT_CONTAINER, '__probe__')
     account_name = blob_probe.account_name
 
+    if not skip_archive_update:
     # Prepare daily index
-    index_blob_path = f"{date_prefix}/index.json"
-    index_blob = BlobClient.from_connection_string(
-        AZ_CONNECTION,
-        SNAPSHOT_CONTAINER,
-        index_blob_path
-    )
-    try:
-        existing = index_blob.download_blob().readall()
-        index_data = json.loads(existing)
-    except Exception:
-        index_data = {"date": date_str, "snapshots": []}
+        index_blob_path = f"{date_prefix}/index.json"
+        index_blob = BlobClient.from_connection_string(
+            AZ_CONNECTION,
+            SNAPSHOT_CONTAINER,
+            index_blob_path
+        )
+        try:
+            existing = index_blob.download_blob().readall()
+            index_data = json.loads(existing)
+        except Exception:
+            index_data = {"date": date_str, "snapshots": []}
+    else:
+        index_data = None  # Ensure we don't accidentally use it later
+
 
     targets = PRESETS or [None]
     failures = []
@@ -112,22 +117,22 @@ def handle_snapshot_sequence():
                     content_settings=ContentSettings(content_type='image/jpeg')
                 )
             logger.info(f"[{label}] Uploaded to {blob_path}")
-
-            # 4. Update daily index—update existing entry or append new
-            prefix_pattern = f"{date_prefix}/{hour_label}_"
-            updated = False
-            for entry in index_data["snapshots"]:
-                if entry.get("preset") == label and entry.get("path", "").startswith(prefix_pattern):
-                    entry["time"] = now.strftime('%H:%M')
-                    entry["path"] = blob_path
-                    updated = True
-                    break
-            if not updated:
-                index_data["snapshots"].append({
-                    "time": now.strftime('%H:%M'),
-                    "preset": label,
-                    "path": blob_path
-                })
+            if not skip_archive_update:
+                # 4. Update daily index—update existing entry or append new
+                prefix_pattern = f"{date_prefix}/{hour_label}_"
+                updated = False
+                for entry in index_data["snapshots"]:
+                    if entry.get("preset") == label and entry.get("path", "").startswith(prefix_pattern):
+                        entry["time"] = now.strftime('%H:%M')
+                        entry["path"] = blob_path
+                        updated = True
+                        break
+                if not updated:
+                    index_data["snapshots"].append({
+                        "time": now.strftime('%H:%M'),
+                        "preset": label,
+                        "path": blob_path
+                    })
 
             # 5. Update the “latest” alias using the same filename
             encoded = urllib.parse.quote(blob_path, safe='')
@@ -148,7 +153,7 @@ def handle_snapshot_sequence():
             failures.append(label)
 
     # Upload updated index.json if any entries exist
-    if index_data.get("snapshots"):
+    if not skip_archive_update and index_data and index_data.get("snapshots"):
         index_blob.upload_blob(
             json.dumps(index_data, indent=2),
             overwrite=True,
