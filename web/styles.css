@@ -322,40 +322,189 @@ header h1 a {
   }
   
   /* ===== Lightbox Modal ===== */
-  #lightbox {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.85);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+#lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.88);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /* make sure children are vertically centered */
+}
+
+#lightbox[aria-hidden="false"] {
+  display: flex;
+}
+
+.lightbox-header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 1.5rem;
+  left: 0;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1010;
+}
+
+.lightbox-period {
+  position: absolute;
+  left: 2rem;
+  top: 0;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 0.4em 1em;
+  border-radius: 8px;
+  pointer-events: auto;
+}
+
+.lightbox-date {
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.4em 1em;
+  border-radius: 8px;
+  margin: 0 auto;
+  pointer-events: auto;
+}
+
+.lightbox-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+  min-width: 60vw;
+  min-height: 50vh;
+  z-index: 1010;
+}
+
+/* ===== Lightbox navigation arrows (WCAG 44×44px hit area) ===== */
+.lightbox-nav {
+  background: rgba(0, 0, 0, 0.25);
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;       /* slightly smaller icon so it fits */
+  line-height: 1;
+  width: 44px;             /* ensure 44×44 clickable area */
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.lightbox-nav:hover,
+.lightbox-nav:focus {
+  background: rgba(0, 0, 0, 0.6);
+  outline: 3px solid #88b6e7;
+  outline-offset: 2px;
+}
+
+
+#lightbox-img {
+  max-width: 70vw;
+  max-height: 70vh;
+  border-radius: 6px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.20);
+}
+
+#lightbox-no-image {
+  min-width: 60vw;
+  min-height: 45vh;
+  background: rgba(30,30,30,0.7);
+  color: #fff;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+#lightbox-close,
+.lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  font-size: 2.4rem;
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.3em 0.7em;
+  z-index: 1020;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+#lightbox-close:focus,
+.lightbox-close:focus {
+  background: rgba(0,0,0,0.5);
+  outline: 3px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  z-index: 1000;
+}
+
+@media (max-width: 700px) {
+  .lightbox-body {
+    min-width: 90vw;
+    min-height: 40vh;
+    flex-direction: column;
+    gap: 0.5rem;
   }
-  
-  #lightbox[aria-hidden="false"] {
-    display: flex;
+  #lightbox-img, #lightbox-no-image {
+    max-width: 85vw;
+    max-height: 65vh;
   }
-  
-  #lightbox img {
-    max-width: 90vw;
-    max-height: 90vh;
-    border-radius: 4px;
+  .lightbox-header {
+    top: 0.5rem;
   }
-  
-  #lightbox-close {
-    position: absolute;
-    top: 1rem;
+  .lightbox-period {
+    left: 1rem;
+    font-size: 0.99rem;
+    padding: 0.3em 0.8em;
+  }
+  .lightbox-date {
+    font-size: 0.99rem;
+    padding: 0.3em 0.8em;
+  }
+  #lightbox-close, .lightbox-close {
+    top: 0.5rem;
     right: 1rem;
     font-size: 2rem;
-    color: white;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
+    padding: 0.15em 0.6em;
   }
-  
-  #lightbox-close:focus {
-    outline: 3px solid #ffffff;
-    outline-offset: 4px;
-  }
-  
+}
+
+
+
+#lightbox-prev,
+#lightbox-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#lightbox-prev {
+  left: 1rem;
+}
+
+#lightbox-next {
+  right: 1rem;
+}
+

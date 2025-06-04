@@ -79,11 +79,42 @@
       </section>
     </main>
   
-    <div id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="lightbox-heading">
-      <div class="lightbox-backdrop"></div>
-      <img id="lightbox-img" alt="">
-      <button id="lightbox-close" aria-label="Loka við stórmynd">×</button>
-    </div>
+    
+      <div
+      id="lightbox"
+      aria-hidden="true"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="lightbox-heading"
+      tabindex="-1"
+      >
+      <div class="lightbox-backdrop" tabindex="-1"></div>
+
+      <div class="lightbox-header">
+        <span class="lightbox-period" id="lightbox-period" aria-live="polite"></span>
+        <span class="lightbox-date" id="lightbox-date" aria-live="polite"></span>
+      </div>
+      <div class="lightbox-body">
+        <button id="lightbox-prev" class="lightbox-nav" aria-label="Fyrri mynd (vinstri ör)" tabindex="0">
+          &#10094;
+        </button>
+        <img id="lightbox-img" alt="" />
+        <div
+          id="lightbox-no-image"
+          class="no-image-msg"
+          style="display:none;"
+          aria-live="polite"
+          role="status"
+        >
+          Engin mynd tiltæk í þessu tímabili eða á þessum degi.
+        </div>
+        <button id="lightbox-next" class="lightbox-nav" aria-label="Næsta mynd (hægri ör)" tabindex="0">
+          &#10095;
+        </button>
+      </div>
+      <button id="lightbox-close" aria-label="Loka við stórmynd" class="lightbox-close" tabindex="0">×</button>
+      </div>
+
   
     <script src="global.js"></script>
     <script src="index.js"></script>

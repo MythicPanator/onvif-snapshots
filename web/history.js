@@ -1,8 +1,10 @@
 let currentDate = new Date();
+let currentDateStr  = ""; 
 
 function pad(n) { return String(n).padStart(2, '0'); }
 
-function loadDay(date) {
+async function loadDay(date, updateUrl = false) {
+
   const yyyy = date.getFullYear();
   const mm = pad(date.getMonth() + 1);
   const dd = pad(date.getDate());
@@ -10,17 +12,36 @@ function loadDay(date) {
   const dayLabel = `${yyyy}-${mm}-${dd}`;
   document.getElementById('current-day').textContent = dayLabel;
 
+  const dateStr = `${yyyy}-${mm}-${dd}`;
   const url = `${STORAGE_BASE}/${yyyy}/${mm}/${dd}/index.json`;
 
-  fetch(url)
-    .then(res => res.ok ? res.json() : Promise.reject("No index"))
-    .then(data => {
-      renderSnapshots(data.snapshots);
-    })
-    .catch(() => {
-      renderSnapshots([]);
-    });
+  currentDateStr = dayLabel;
+
+  try {
+    if (updateUrl) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('date', dateStr);
+      window.history.pushState({}, '', url);
+    }
+    
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("No index");
+    const data = await res.json();
+
+    // ✅ Update snapshotsByDay and daysList globally
+    if (!snapshotsByDay[dateStr]) {
+      snapshotsByDay[dateStr] = groupSnapshotsByPeriod(data.snapshots || []);
+      daysList = Array.from(new Set([...daysList, dateStr])).sort();
+    }
+
+    const allowedPresets = new Set(['1', '2', '3', '4']);
+    const filtered = data.snapshots.filter(entry => allowedPresets.has(String(entry.preset)));
+    renderSnapshots(filtered);
+  } catch {
+    renderSnapshots([]);
+  }
 }
+
 
 function renderSnapshots(snapshots) {
   const grid = document.getElementById('snapshot-grid');
@@ -39,7 +60,7 @@ function renderSnapshots(snapshots) {
     groups[period].push(entry);
   }
 
-  const periodOrder = ['early', 'midday', 'late', 'night'];
+  const periodOrder = ['night', 'early', 'midday', 'late'];
   const presetLabels = {
     '1': 'Suður',
     '2': 'Suður að Baldvinsskála',
@@ -79,12 +100,17 @@ function renderSnapshots(snapshots) {
         img.setAttribute('role', 'button');
         img.setAttribute('tabindex', '0');
 
+        const periodIdx = periodOrder.indexOf(period);
+        const entryIdx = entries.indexOf(entry); // safe because you're still inside `entries.forEach(...)`
+      
+        img.addEventListener('click', () => openLightbox(currentDateStr, periodIdx, entryIdx));
         img.addEventListener('keydown', e => {
-          if (e.key === 'Enter' || e.key === ' ') {
+          if (['Enter', ' '].includes(e.key)) {
             e.preventDefault();
-            openLightbox(img.src, img.alt);
+            openLightbox(currentDateStr, periodIdx, entryIdx);
           }
         });
+
 
         const caption = document.createElement('p');
         caption.textContent = presetLabels[entry.preset] || `Myndavél ${entry.preset}`;
@@ -98,16 +124,45 @@ function renderSnapshots(snapshots) {
       section.appendChild(row);
       grid.appendChild(section);
     });
+    
+    // After thumbnails are rendered, re-bind lightbox triggers
+    const dateStr = document.getElementById('current-day').textContent;
+
+    let globalImgIdx = 0; // Reset across all periods
+    Object.entries(groups).sort((a, b) =>
+      periodOrder.indexOf(a[0]) - periodOrder.indexOf(b[0])
+    )
 }
 
 document.getElementById('prev-day').onclick = () => {
   currentDate.setDate(currentDate.getDate() - 1);
-  loadDay(currentDate);
+  loadDay(currentDate, true);
 };
 
 document.getElementById('next-day').onclick = () => {
   currentDate.setDate(currentDate.getDate() + 1);
-  loadDay(currentDate);
+  loadDay(currentDate, true);
 };
 
-loadDay(currentDate);
+(async () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const dateParam = urlParams.get('date');
+  if (dateParam) {
+    const [yyyy, mm, dd] = dateParam.split('-').map(Number);
+    currentDate = new Date(yyyy, mm - 1, dd);
+  }
+  
+  await loadDay(currentDate);
+
+  const periodParam = urlParams.get('period');
+  const camParam = urlParams.get('cam');  // preset index
+
+  if (periodParam && camParam) {
+    const periodIdx = ['night', 'early', 'midday', 'late'].indexOf(periodParam);
+    const camIdx = ['1', '2', '3', '4'].indexOf(camParam); // use same logic as sort
+    if (periodIdx !== -1 && camIdx !== -1) {
+      openLightbox(formatDate(currentDate), periodIdx, camIdx);
+    }
+  }
+
+})();
