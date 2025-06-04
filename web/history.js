@@ -15,7 +15,9 @@ function loadDay(date) {
   fetch(url)
     .then(res => res.ok ? res.json() : Promise.reject("No index"))
     .then(data => {
-      renderSnapshots(data.snapshots);
+      const allowedPresets = new Set(['1', '2', '3', '4']);
+      const filtered = data.snapshots.filter(entry => allowedPresets.has(entry.preset));
+      renderSnapshots(filtered);
     })
     .catch(() => {
       renderSnapshots([]);
@@ -39,7 +41,7 @@ function renderSnapshots(snapshots) {
     groups[period].push(entry);
   }
 
-  const periodOrder = ['early', 'midday', 'late', 'night'];
+  const periodOrder = ['night', 'early', 'midday', 'late'];
   const presetLabels = {
     '1': 'Suður',
     '2': 'Suður að Baldvinsskála',

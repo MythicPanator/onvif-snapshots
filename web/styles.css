@@ -180,7 +180,8 @@ header h1 a {
     font-weight: 600;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
-    margin-top: 3rem;
+    margin-top: 0rem;
+    margin-bottom: 1.5rem;
     min-width: 0px;
   }
   .cta-button:hover,
