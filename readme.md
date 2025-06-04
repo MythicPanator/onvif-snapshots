@@ -96,6 +96,95 @@ This repo is offered with the **best intent** — but **you’re responsible** f
 
 ---
 
+## Development and Getting Started
+
+This project is split into two parts: the **Azure Function backend** and the **static frontend website**.
+
+---
+
+### 🧪 Local Development (Azure Function)
+
+To run the function locally:
+
+1. **Install dependencies**  
+   Use a virtual environment if desired.
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. **Configure environment**  
+   Create a `.env` file based on the provided `.env.example`. This should include:
+
+   ```
+   CAMERA_IP=192.168.x.x
+   CAMERA_USER=admin
+   CAMERA_PASSWORD=yourpassword
+   CAMERA_PRESETS=1,2,3,4
+   AzureWebJobsStorage=DefaultEndpointsProtocol=...
+   ```
+
+3. **Run locally**  
+   You can run the function directly for testing:
+
+   ```bash
+   python function_app.py
+   ```
+
+   Or use the Azure Functions Core Tools for a more integrated experience:
+
+   ```bash
+   func start
+   ```
+
+---
+
+### 🌐 Static Website (Frontend)
+
+The frontend is a static website with no backend logic. It displays images directly from Azure Blob Storage.
+
+To preview it locally:
+
+```bash
+cd web
+python3 -m http.server 8000
+```
+
+Then open [http://localhost:8000](http://localhost:8000) in your browser.
+
+To deploy:
+
+ - Use the included GitHub Actions workflow: .github/workflows/deploy-web.yml
+ - Or manually upload the contents of the `web/` folder (e.g., `index.html`, `styles.css`, etc.) to the `$web` container of your Azure Storage account configured for static website hosting.
+---
+
+### 🔁 Snapshot Workflow
+
+The snapshot function:
+
+- Connects to ONVIF-compatible cameras using RTSP
+- Selects a preset (if configured)
+- Captures a JPEG frame using OpenCV
+- Stores the result under `snapshots/YYYY/MM/DD/...`
+- Maintains a `snapshots/latest/...` alias for convenience
+- Updates a `index.json` file for the date to power browsing
+
+You can trigger snapshots:
+
+- On schedule (every 30 minutes, via Azure Timer)
+- On demand via HTTP (`/api/snapshot`)
+- Manually by running `function_app.py`
+
+---
+
+### ℹ️ Notes
+
+- Ensure your camera supports ONVIF + RTSP and is reachable from the function
+- The Azure Function must have outbound network access to the camera IP
+- Snapshots are saved temporarily under `/tmp/` inside the function before uploading
+
+---
+
 ## License
 
 Dual‑licensed:
