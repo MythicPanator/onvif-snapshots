@@ -39,7 +39,7 @@ function renderSnapshots(snapshots) {
     groups[period].push(entry);
   }
 
-  const periodOrder = ['early', 'midday', 'late', 'night'];
+  const periodOrder = ['night', 'early', 'midday', 'late'];
   const presetLabels = {
     '1': 'Suður',
     '2': 'Suður að Baldvinsskála',

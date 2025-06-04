@@ -102,22 +102,22 @@ def handle_snapshot_sequence():
             # 2. Derive just the filename for blob naming
             filename = os.path.basename(local_path)
             logger.info(f"[{label}] Captured: {filename}")
-
-            # 3. Upload from the temp path…
-            blob_path = f"{date_prefix}/{hour_label}_{date_str}_{filename}"
-            blob = BlobClient.from_connection_string(
-                AZ_CONNECTION,
-                SNAPSHOT_CONTAINER,
-                blob_path
-            )
-            with open(local_path, 'rb') as f:
-                blob.upload_blob(
-                    f,
-                    overwrite=True,
-                    content_settings=ContentSettings(content_type='image/jpeg')
-                )
-            logger.info(f"[{label}] Uploaded to {blob_path}")
             if not skip_archive_update:
+                # 3. Upload from the temp path…
+                blob_path = f"{date_prefix}/{hour_label}_{date_str}_{filename}"
+                blob = BlobClient.from_connection_string(
+                    AZ_CONNECTION,
+                    SNAPSHOT_CONTAINER,
+                    blob_path
+                )
+                with open(local_path, 'rb') as f:
+                    blob.upload_blob(
+                        f,
+                        overwrite=True,
+                        content_settings=ContentSettings(content_type='image/jpeg')
+                    )
+                logger.info(f"[{label}] Uploaded to {blob_path}")
+            
                 # 4. Update daily index—update existing entry or append new
                 prefix_pattern = f"{date_prefix}/{hour_label}_"
                 updated = False
@@ -134,16 +134,31 @@ def handle_snapshot_sequence():
                         "path": blob_path
                     })
 
-            # 5. Update the “latest” alias using the same filename
-            encoded = urllib.parse.quote(blob_path, safe='')
-            source_url = f"https://{account_name}.blob.core.windows.net/{SNAPSHOT_CONTAINER}/{encoded}"
-            latest_blob = BlobClient.from_connection_string(
-                AZ_CONNECTION,
-                SNAPSHOT_CONTAINER,
-                f"latest/{filename}"
-            )
-            latest_blob.start_copy_from_url(source_url)
-            logger.info(f"[{label}] Latest alias updated")
+                # 5. Update the “latest” alias using the same filename
+                encoded = urllib.parse.quote(blob_path, safe='')
+                source_url = f"https://{account_name}.blob.core.windows.net/{SNAPSHOT_CONTAINER}/{encoded}"
+                latest_blob = BlobClient.from_connection_string(
+                    AZ_CONNECTION,
+                    SNAPSHOT_CONTAINER,
+                    f"latest/{filename}"
+                )
+                latest_blob.start_copy_from_url(source_url)
+                logger.info(f"[{label}] Latest alias updated")
+            else:
+                 # 3. Upload from the temp path…
+                latest_path  = f"latest/{filename}"
+                blob = BlobClient.from_connection_string(
+                    AZ_CONNECTION,
+                    SNAPSHOT_CONTAINER,
+                    latest_path 
+                )
+                with open(local_path, 'rb') as f:
+                    blob.upload_blob(
+                        f,
+                        overwrite=True,
+                        content_settings=ContentSettings(content_type='image/jpeg')
+                    )
+                logger.info(f"[{label}] Uploaded to {latest_path}")
 
         except OnvifClientError as e:
             logger.error(f"[{label}] ONVIF error: {e}")
