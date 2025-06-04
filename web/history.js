@@ -15,7 +15,9 @@ function loadDay(date) {
   fetch(url)
     .then(res => res.ok ? res.json() : Promise.reject("No index"))
     .then(data => {
-      renderSnapshots(data.snapshots);
+      const allowedPresets = new Set(['1', '2', '3', '4']);
+      const filtered = data.snapshots.filter(entry => allowedPresets.has(entry.preset));
+      renderSnapshots(filtered);
     })
     .catch(() => {
       renderSnapshots([]);
