@@ -244,6 +244,7 @@ header h1 a {
     justify-content: center;
     gap: 1rem;
     margin-bottom: 2rem;
+    position: relative; /* allow overlay banner positioning */
   }
   
   .tile {
@@ -261,6 +262,7 @@ header h1 a {
     cursor: pointer;
     aspect-ratio: 16 / 9;
     object-fit: cover;
+    transition: filter 0.2s ease, opacity 0.2s ease;
   }
   
   .tile img:focus {
@@ -358,5 +360,32 @@ header h1 a {
   #lightbox-close:focus {
     outline: 3px solid #ffffff;
     outline-offset: 4px;
+  }
+  
+  /* ===== Stale Images Indicator ===== */
+  #snapshot-grid.stale .tile img {
+    filter: grayscale(1);
+    opacity: 0.55;
+  }
+
+  #stale-banner {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px; /* stretch across the row */
+    z-index: 10;
+    background: rgba(255, 193, 7, 0.95); /* amber */
+    color: #1f1400;
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-weight: 700;
+    text-align: center;
+    pointer-events: none; /* don't block clicks on images */
+  }
+
+  #stale-banner .details {
+    font-weight: 500;
   }
   
